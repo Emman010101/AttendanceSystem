@@ -20,7 +20,7 @@
     }
     $sql = "SELECT studenttbl.student_lrn, studenttbl.student_fname, studenttbl.student_mname, studenttbl.student_lname, timeinouttbl.time_in, timeinouttbl.time_out, timeinouttbl.date
                                             FROM timeinouttbl
-                                            INNER JOIN studenttbl ON timeinouttbl.student_lrn=studenttbl.student_lrn".$extension;
+                                            INNER JOIN studenttbl ON timeinouttbl.fingerprint_id=studenttbl.fingerprint_id".$extension;
     $result = mysqli_query($conn, $sql);
     
     $data_arr = array();
