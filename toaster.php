@@ -8,7 +8,7 @@
         unset($_SESSION['student_deleted']);
     }
     if(isset($_SESSION['student_edited'])){
-        echo "<script>toastr.success('Updated Successfully!');</script>";
+        echo "<script>toastr.success('Saved');</script>";
         unset($_SESSION['student_edited']);
     }
 ?>

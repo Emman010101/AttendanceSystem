@@ -2,7 +2,7 @@
     include "dbconnect.php";
     session_start();
     $id = $_GET["id"];
-    $sql = "DELETE FROM studenttbl WHERE id=$id;";
+    $sql = "UPDATE studenttbl SET del_fingerid='1' WHERE id=$id;";
 
     if (mysqli_query($conn, $sql)) {
         $_SESSION['student_deleted'] = true; 

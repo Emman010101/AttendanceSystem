@@ -6,10 +6,10 @@
 
     if(isset($_GET['search'])){
         $search_name = $_GET['search'];
-        $extension = "WHERE student_fname LIKE '%".$_GET['search']."%'";
+        $extension = " AND student_fname LIKE '%".$_GET['search']."%'";
     }
 
-    $sql = "SELECT * FROM studenttbl ".$extension;
+    $sql = "SELECT * FROM studenttbl WHERE del_fingerid=0".$extension;
     $result = mysqli_query($conn, $sql);
     
     $data_arr = array();
@@ -40,10 +40,6 @@
     <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
 </head>
 
 <body onload="fillSearchField()">

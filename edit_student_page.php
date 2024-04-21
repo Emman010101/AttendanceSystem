@@ -1,8 +1,9 @@
 <?php 
     include "dbconnect.php";
     include "session.php";
-
+    $student_id = "";
     if(isset($_GET['id'])){
+        $student_id = $_GET['id'];
         $sql = "SELECT * FROM studenttbl WHERE id=".$_GET['id'];
         $result = mysqli_query($conn, $sql);
 
@@ -36,13 +37,6 @@
 		<script src="assets/js/html5shiv.min.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
-    <style>
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-         -webkit-appearance: none; 
-         margin: 0; 
-        }
-    </style>
 </head>
 <body>
     <div class="main-wrapper">
@@ -182,6 +176,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-box">
+                        <h3 class="card-title">Fingerprint</h3>
+                        <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Fingerprint ID</label>
+                                <input type="number" id="fingerprint_id" class="form-control floating" placeholder="Choose a number between 1 to 127" value="<?php if($data_arr[0]['fingerprint_id'] > 0) echo $data_arr[0]['fingerprint_id'];?>" name="fingerprint_id" <?php if($data_arr[0]['fingerprint_id'] > 0) echo "readonly";?>>
+                                <div id="check"></div>
+                            </div>
+                            </div>
+                            <div class="col-md-12">
+                                <a class="btn btn-primary submit-btn" onclick="setId(this.innerHTML)">Add</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="text-center m-t-20">
                         <button class="btn btn-primary submit-btn" type="submit">Save</button>
                     </div>
@@ -200,6 +209,52 @@
     <script src="assets/js/app.js"></script>
     <link href="assets/plugins/toastr-master/build/toastr.css" rel="stylesheet"/>
     <script src="assets/plugins/toastr-master/toastr.js"></script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+         -webkit-appearance: none; 
+         margin: 0; 
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+  	        $.ajax({
+              url: "fingerprint_add.php" + "<?php echo $student_id?>"
+                }).done(function(data) {
+                $('#check').html(data);
+            });
+            setInterval(function(){
+            $.ajax({
+                url: "fingerprint_add.php?id=" + "<?php echo $student_id?>"
+                }).done(function(data) {
+                $('#check').html(data);
+            });
+            },5000);
+        });
+</script>
+    <script>
+        function setId(tag){
+            $id = "<?php echo $student_id?>";
+            console.log(tag);
+
+            if(tag == "Add"){
+                var val = "<?php echo $data_arr[0]['fingerprint_id'];?>";
+                var val1 = document.getElementById("fingerprint_id").value;
+                if(val1 > 0 && val > 0){
+                    window.location.href = "edit_student.php?add=1&id="+$id;
+                }else{
+                    if(val < 1 && val1 < 1){
+                        toastr.warning('Please choose a number then click save');
+                    }else{
+                        toastr.warning('Please click save');
+                    }
+                    
+                }
+            }else{
+                window.location.href = "edit_student.php?edit=1&id="+$id;
+            }
+        }
+    </script>
 </body>
 </html>
 <?php
