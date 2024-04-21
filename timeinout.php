@@ -8,7 +8,7 @@
     $count = mysqli_num_rows($result);
 
     if($count > 0 ){
-        $sql = "SELECT * FROM timeinouttbl WHERE `date`=CURDATE() AND `fingerprint_id`=$fingerprint_id";
+    $sql = "SELECT * FROM timeinouttbl WHERE `date`=CURDATE() AND `fingerprint_id`=$fingerprint_id";
 
     $result = mysqli_query($conn, $sql);
     $count = mysqli_num_rows($result);

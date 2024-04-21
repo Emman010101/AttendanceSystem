@@ -46,6 +46,7 @@
     } else {
         echo "0 results";
     }
+    $_SESSION['sql'] = $sql;
     
     
 ?>
@@ -63,15 +64,9 @@
     <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    
-    <!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
 </head>
 
 <body onload="setValOnLoad()">
-    
     <div class="main-wrapper">
         <div class="header">
 			<div class="header-left">
@@ -124,13 +119,13 @@
                     </div>
                 </div>
                 <div class="row filter-row">
-                    <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-3 col-md-2">
                         <div class="form-group form-focus">
                             <label class="focus-label">Student Name</label>
                             <input type="text" class="form-control floating" id="student_name">
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-3 col-md-2">
                         <div class="form-group form-focus select-focus">
                             <label class="focus-label">Select Month</label>
                             <select class="select floating" id="month_select">
@@ -150,7 +145,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-3 col-md-2">
                         <div class="form-group form-focus select-focus">
                             <label class="focus-label">Select Year</label>
                             <select class="select floating" id="year_select">
@@ -169,8 +164,11 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-3 col-md-2">
                         <a onclick="nextPage()" class="btn btn-success btn-block"> Search </a>
+                    </div>
+                    <div class="col-sm-3 col-md-2">
+                        <a onclick="exportToExcel()" class="btn btn-success btn-block"> Export </a>
                     </div>
                 </div>
                 <div class="row">
@@ -234,6 +232,10 @@
             window.location.href = "attendance_reports_page.php?sn=" + student_name + "&sm=" + selected_month + "&sy=" + selected_year;
             //console.log(student_name);
             //window.location.href = "attendance_reports.php";
+        }
+
+        function exportToExcel(){
+            window.location.href = "export_to_excel.php?export=yes";
         }
     </script>
 </body>

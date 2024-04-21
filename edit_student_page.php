@@ -18,6 +18,7 @@
         } else {
             echo "0 results";
         }
+        $_SESSION["idHasValue"] = $data_arr[0]['fingerprint_id'];
     }
 ?>
 <!DOCTYPE html>
@@ -97,13 +98,6 @@
                         <h3 class="card-title">Basic Informations</h3>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="profile-img-wrap">
-                                    <img class="inline-block" src="assets/img/user.jpg" alt="user">
-                                    <div class="fileupload btn">
-                                        <span class="btn-text">edit</span>
-                                        <input class="upload" type="file">
-                                    </div>
-                                </div>
                                 <div class="profile-basic">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -182,12 +176,12 @@
                         <div class="col-md-4">
                             <div class="form-group form-focus">
                                 <label class="focus-label">Fingerprint ID</label>
-                                <input type="number" id="fingerprint_id" class="form-control floating" placeholder="Choose a number between 1 to 127" value="<?php if($data_arr[0]['fingerprint_id'] > 0) echo $data_arr[0]['fingerprint_id'];?>" name="fingerprint_id" <?php if($data_arr[0]['fingerprint_id'] > 0) echo "readonly";?>>
+                                <input type="number" id="fingerprint_id" class="form-control floating" placeholder="Choose a number between 1 to 127" min="1" max="127" value="<?php if($data_arr[0]['fingerprint_id'] > 0) echo $data_arr[0]['fingerprint_id'];?>" name="fingerprint_id" <?php if($data_arr[0]['fingerprint_id'] > 0) echo "readonly";?>>
                                 <div id="check"></div>
                             </div>
                             </div>
                             <div class="col-md-12">
-                                <a class="btn btn-primary submit-btn" onclick="setId(this.innerHTML)">Add</a>
+                                <a class="btn btn-primary submit-btn" onclick="setId(this.innerHTML)">Register a fingerprint</a>
                             </div>
                         </div>
                     </div>
@@ -237,7 +231,7 @@
             $id = "<?php echo $student_id?>";
             console.log(tag);
 
-            if(tag == "Add"){
+            if(true){
                 var val = "<?php echo $data_arr[0]['fingerprint_id'];?>";
                 var val1 = document.getElementById("fingerprint_id").value;
                 if(val1 > 0 && val > 0){
@@ -247,11 +241,10 @@
                         toastr.warning('Please choose a number then click save');
                     }else{
                         toastr.warning('Please click save');
+                        console.log(val1);
                     }
                     
                 }
-            }else{
-                window.location.href = "edit_student.php?edit=1&id="+$id;
             }
         }
     </script>

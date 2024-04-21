@@ -136,8 +136,8 @@
                                                 <div class="dropdown dropdown-action">
                                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" id="edit_button" onclick="setId('.$value["id"].', this);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" id="delete_button" data-toggle="modal" data-target="#delete_employee" onclick="setId('.$value["id"].', this);"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item" href="#" id="edit_button" onclick="setId('.$value["id"].', this, '.$value["fingerprint_id"].');"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a class="dropdown-item" href="#" id="delete_button" data-toggle="modal" data-target="#delete_employee" onclick="setId('.$value["id"].', this, '.$value["fingerprint_id"].');"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                     </div>
                                                 </div>
                                             </td></tr>';
@@ -180,23 +180,25 @@
     <script src="assets/plugins/toastr-master/toastr.js"></script>
     <script>
         var delete_id = "";
+        var fingerprint_id = ""
 
         function fillSearchField(){ 
             document.getElementById("student_name").value = "<?php echo $search_name?>";
         }
-        function setId(id, operation){
+        function setId(id, operation, fpid){
             console.log(operation.id);
             operation = operation.id;
             if(operation == "edit_button"){
                 window.location.href = "edit_student_page.php?id=" + id;
             }else{
                 delete_id = id;
-                console.log(delete_id);
+                fingerprint_id = fpid;
+                console.log(fpid);
             }
         }
 
         function deleteStudent(){
-            window.location.href = "delete_student.php?id=" + delete_id;
+            window.location.href = "delete_student.php?id=" + delete_id + "&fpid=" + fingerprint_id;
         }
 
         function searchName(){

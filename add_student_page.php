@@ -84,44 +84,37 @@
                         <h3 class="card-title">Basic Informations</h3>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="profile-img-wrap">
-                                    <img class="inline-block" src="assets/img/user.jpg" alt="user">
-                                    <div class="fileupload btn">
-                                        <span class="btn-text">edit</span>
-                                        <input class="upload" type="file">
-                                    </div>
-                                </div>
                                 <div class="profile-basic">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group form-focus">
                                                 <label class="focus-label">First Name</label>
-                                                <input type="text" class="form-control floating" name="fname">
+                                                <input type="text" class="form-control floating" name="fname" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group form-focus">
                                                 <label class="focus-label">Middle Name</label>
-                                                <input type="text" class="form-control floating" name="mname">
+                                                <input type="text" class="form-control floating" name="mname" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group form-focus">
                                                 <label class="focus-label">Last Name</label>
-                                                <input type="text" class="form-control floating" name="lname">
+                                                <input type="text" class="form-control floating" name="lname" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group form-focus">
                                                 <label class="focus-label">LRN</label>
-                                                <input type="number" class="form-control floating" name="lrn">
+                                                <input type="number" class="form-control floating" name="lrn" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group form-focus">
                                                 <label class="focus-label">Birth Date</label>
                                                 <div class="cal-icon">
-                                                    <input class="form-control floating datetimepicker" type="text" name="birthdate" onclick="console.log(this.value)" id="datepicker">
+                                                    <input class="form-control floating datetimepicker" type="text" name="birthdate" onclick="console.log(this.value)" id="datepicker" required>
                                                 </div>
                                             </div>
                                         </div>
