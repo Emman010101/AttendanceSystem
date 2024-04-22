@@ -232,6 +232,8 @@ if (!empty($_GET['confirm_id'])) {
         else{
             mysqli_stmt_bind_param($result, "s", $fingerid);
             mysqli_stmt_execute($result);
+            $sql = "UPDATE studenttbl SET registered=1 WHERE fingerprint_id=$fingerID";
+            mysqli_query($conn, $sql);
             echo "Fingerprint has been added!";
             exit();
         }

@@ -1,30 +1,9 @@
 <?php
-    include 'dbconnect.php';
     include 'session.php';
-    $extension = "";
-    $search_name = "";
-
+    $search = "";    
     if(isset($_GET['search'])){
-        $search_name = $_GET['search'];
-        $extension = " AND student_fname LIKE '%".$_GET['search']."%'";
+        $search = "?search=".$_GET['search'];
     }
-
-    $sql = "SELECT * FROM studenttbl WHERE del_fingerid=0".$extension;
-    $result = mysqli_query($conn, $sql);
-    
-    $data_arr = array();
-    if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($data_arr, $row);
-        }
-        //print_r($data_arr);
-        
-    } else {
-        echo "0 results";
-    }
-    
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +22,7 @@
     <script src="https://kit.fontawesome.com/001450aeb1.js" crossorigin="anonymous"></script>
 </head>
 
-<body onload="fillSearchField()">
+<body>
     <div class="main-wrapper">
         <div class="header">
 			<div class="header-left">
@@ -77,14 +56,14 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="active">
+                        <li>
                             <a href="student_list_page.php"><i class="fa fa-user"></i> <span>Students List</span></a>
                         </li>
                         <li>
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
-                        <li>
-                            <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
+                        <li class="active">
+                            <a href="attendance_reports_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>
                     </ul>
                 </div>
@@ -105,7 +84,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <label class="focus-label">Student Name</label>
-                            <input type="text" class="form-control floating" id="student_name">
+                            <input type="text" class="form-control floating" id="student_name" value="<?php echo substr($search, 8)?>">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -118,35 +97,17 @@
                             <table class="table table-striped custom-table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>LRN</th>
                                         <th>First Name</th>
                                         <th>Middle Name</th>
                                         <th>Last Name</th>
                                         <th>Birthdate</th>
                                         <th>Gender</th>
-                                        <th class="text-right">Action</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                <?php
-                                            foreach($data_arr as $value){
-                                                echo '<tr><td>'.$value["student_lrn"].'</td>';
-                                                echo '<td>'.$value["student_fname"].'</td>';
-                                                echo '<td>'.$value["student_mname"].'</td>';
-                                                echo '<td>'.$value["student_lname"].'</td>';
-                                                echo '<td>'.$value["student_birthdate"].'</td>';
-                                                echo '<td>'.$value["student_gender"].'</td>';
-                                                echo '<td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#" id="edit_button" onclick="setId('.$value["id"].', this, '.$value["fingerprint_id"].');"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" id="delete_button" data-toggle="modal" data-target="#delete_employee" onclick="setId('.$value["id"].', this, '.$value["fingerprint_id"].');"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td></tr>';
-                                            }
-                                        ?>
+                                <tbody id="stud_table">
                                 </tbody>
                             </table>
 						</div>
@@ -182,34 +143,22 @@
     <script src="assets/js/app.js"></script>
     <link href="assets/plugins/toastr-master/build/toastr.css" rel="stylesheet"/>
     <script src="assets/plugins/toastr-master/toastr.js"></script>
+    
     <script>
-        var delete_id = "";
-        var fingerprint_id = ""
-
-        function fillSearchField(){ 
-            document.getElementById("student_name").value = "<?php echo $search_name?>";
-        }
-        function setId(id, operation, fpid){
-            console.log(operation.id);
-            operation = operation.id;
-            if(operation == "edit_button"){
-                window.location.href = "edit_student_page.php?id=" + id;
-            }else{
-                delete_id = id;
-                fingerprint_id = fpid;
-                console.log(fpid);
-            }
-        }
-
-        function deleteStudent(){
-            window.location.href = "delete_student.php?id=" + delete_id + "&fpid=" + fingerprint_id;
-        }
-
-        function searchName(){
-            var search_name = document.getElementById("student_name").value;
-
-            window.location.href = "student_list_page.php?search=" + search_name;
-        }
+        $(document).ready(function(){
+  	        $.ajax({
+              url: "register_biometric_table.php"
+                }).done(function(data) {
+                $('#stud_table').html(data);
+            });
+            setInterval(function(){
+            $.ajax({
+                url: "register_biometric_table.php" + "<?php echo $search?>"
+                }).done(function(data) {
+                $('#stud_table').html(data);
+            });
+            },5000);
+        });
     </script>
 </body>
 </html>

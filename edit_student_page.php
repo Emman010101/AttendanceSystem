@@ -34,10 +34,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
+    <script src="https://kit.fontawesome.com/001450aeb1.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="main-wrapper">
@@ -79,6 +76,9 @@
                         </li>
                         <li>
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
+                        </li>
+                        <li>
+                            <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>
                     </ul>
                 </div>
@@ -170,21 +170,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-box">
-                        <h3 class="card-title">Fingerprint</h3>
-                        <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Fingerprint ID</label>
-                                <input type="number" id="fingerprint_id" class="form-control floating" placeholder="Choose a number between 1 to 127" min="1" max="127" value="<?php if($data_arr[0]['fingerprint_id'] > 0) echo $data_arr[0]['fingerprint_id'];?>" name="fingerprint_id" <?php if($data_arr[0]['fingerprint_id'] > 0) echo "readonly";?>>
-                                <div id="check"></div>
-                            </div>
-                            </div>
-                            <div class="col-md-12">
-                                <a class="btn btn-primary submit-btn" onclick="setId(this.innerHTML)">Register a fingerprint</a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="text-center m-t-20">
                         <button class="btn btn-primary submit-btn" type="submit">Save</button>
                     </div>
@@ -225,29 +210,8 @@
             });
             },5000);
         });
-</script>
-    <script>
-        function setId(tag){
-            $id = "<?php echo $student_id?>";
-            console.log(tag);
-
-            if(true){
-                var val = "<?php echo $data_arr[0]['fingerprint_id'];?>";
-                var val1 = document.getElementById("fingerprint_id").value;
-                if(val1 > 0 && val > 0){
-                    window.location.href = "edit_student.php?add=1&id="+$id;
-                }else{
-                    if(val < 1 && val1 < 1){
-                        toastr.warning('Please choose a number then click save');
-                    }else{
-                        toastr.warning('Please click save');
-                        console.log(val1);
-                    }
-                    
-                }
-            }
-        }
     </script>
+    
 </body>
 </html>
 <?php

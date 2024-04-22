@@ -1,11 +1,7 @@
 <?php
     include "dbconnect.php";
     session_start();
-    if(isset($_GET['add'])){
-      $sql = "UPDATE studenttbl SET add_fingerid=1 WHERE id=".$_GET['id'];
-      mysqli_query($conn, $sql);
-      header("Location: edit_student_page.php?id=".$_GET['id']);
-    }else if(isset($_POST['student_id'])){
+    if(isset($_POST['student_id'])){
       $lrn = $_POST['lrn'];
       $fname = $_POST['fname'];
       $mname = $_POST['mname'];
@@ -15,17 +11,8 @@
       $address = $_POST['address'];
       $phoneno = $_POST['phoneno'];
       $studentid = $_POST['student_id'];
-      $fingerprint_id = $_POST['fingerprint_id'];
-      $ext = "";
-      if(true){
-        $ext = ", fingerprint_id='$fingerprint_id'";
-      }
-
-      $sql = "SELECT * FROM studenttbl WHERE fingerprint_id='$fingerprint_id'";
-      $result = mysqli_query($conn, $sql);
-
-      if (mysqli_num_rows($result) < 1 ||  $_SESSION["idHasValue"] != 0) {
-        $birthdate = str_replace('/', '-', $birthdate);
+      
+      $birthdate = str_replace('/', '-', $birthdate);
         $time = strtotime($birthdate);
         $newformat = date('Y-m-d',$time);
         $birthdate = $newformat;
@@ -38,10 +25,6 @@
         header("Location: student_list_page.php");
       } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-      }
-      }else{
-        $_SESSION['idalreadyexist'] = 1;
-        header("Location: edit_student_page.php?id=".$studentid);
       }
     }
     

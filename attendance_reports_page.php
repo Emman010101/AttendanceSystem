@@ -64,6 +64,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://kit.fontawesome.com/001450aeb1.js" crossorigin="anonymous"></script>
 </head>
 
 <body onload="setValOnLoad()">
@@ -105,6 +106,9 @@
                         </li>
                         <li class="active">
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
+                        </li>
+                        <li>
+                            <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>
                     </ul>
                 </div>
