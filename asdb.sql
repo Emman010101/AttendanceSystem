@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2024 at 08:03 PM
+-- Generation Time: Apr 22, 2024 at 01:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,15 +40,16 @@ CREATE TABLE `studenttbl` (
   `fingerprint_id` int(11) NOT NULL,
   `add_fingerid` int(11) NOT NULL,
   `del_fingerid` int(11) NOT NULL,
-  `fingerprint_select` int(11) NOT NULL
+  `fingerprint_select` int(11) NOT NULL,
+  `registered` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `studenttbl`
 --
 
-INSERT INTO `studenttbl` (`id`, `student_lrn`, `student_fname`, `student_mname`, `student_lname`, `student_birthdate`, `student_gender`, `student_address`, `student_phoneno`, `fingerprint_id`, `add_fingerid`, `del_fingerid`, `fingerprint_select`) VALUES
-(1, '123456789012', 'John', 'Dew', 'Doe', '2000-08-04', 'Male', 'Hacker Street, IT City', '12345678901', 1, 0, 0, 0);
+INSERT INTO `studenttbl` (`id`, `student_lrn`, `student_fname`, `student_mname`, `student_lname`, `student_birthdate`, `student_gender`, `student_address`, `student_phoneno`, `fingerprint_id`, `add_fingerid`, `del_fingerid`, `fingerprint_select`, `registered`) VALUES
+(18, '12342134', 'wqrwqr', 'wrewq', 'wqerwq', '2024-04-22', 'Male', '', '', 3, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -113,7 +114,7 @@ ALTER TABLE `timeinouttbl`
 -- AUTO_INCREMENT for table `studenttbl`
 --
 ALTER TABLE `studenttbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `teachertbl`
