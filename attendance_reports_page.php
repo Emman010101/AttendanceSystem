@@ -107,6 +107,15 @@
                         <li class="active">
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
+                        <li class="submenu">
+							<a href="#"><i class="fa fa-flag-o"></i> <span> Attendance </span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a class="active" href="employees.html">Employees List</a></li>
+								<li><a href="leaves.html">Leaves</a></li>
+								<li><a href="holidays.html">Holidays</a></li>
+								<li><a href="attendance.html">Attendance</a></li>
+							</ul>
+						</li>
                         <li>
                             <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>
