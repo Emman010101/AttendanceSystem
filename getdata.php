@@ -62,10 +62,11 @@ if (isset($_POST['FingerID'])) {
                             $timein = strtotime($row['time_in']);
                             $currtime = strtotime(date('H:i:s'));
                             $diff = $currtime - $timein;
+                            $sched_diff = strtotime($_SESSION['timeout']) - strtotime($_SESSION['timein']);
                             //echo $currtime - $timein;
                             //echo "timein: $timein currtime: $currtime diff: $diff";
                             //if the time difference between time in and current time is 3600 seconds
-                            if($diff >= 3600){
+                            if($diff >= $sched_diff){
                                 $sql="UPDATE timeinouttbl SET `time_out`=CURTIME() WHERE fingerprint_id=? AND date=CURDATE()";
                                 $result = mysqli_stmt_init($conn);
                                 if (!mysqli_stmt_prepare($result, $sql)) {
