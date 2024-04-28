@@ -47,23 +47,37 @@
             <div class="dropdown mobile-user-menu float-right">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
         <!-- start of sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
+            <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li>
                             <a href="student_list_page.php"><i class="fa fa-user"></i> <span>Students List</span></a>
                         </li>
+                        <?php if($_SESSION['login_user'] == 'admin'){
+                            echo '
+                            <li>
+                            <a href="teacher_list_page.php"><i class="fa fa-user"></i> <span>Teachers List</span></a>
+                            </li>
+                            <li>
+                                <a href="section_list_page.php"><i class="fa-solid fa-section"></i> <span>Sections List</span></a>
+                            </li>
+                            <li>
+                                <a href="schedule_page.php"><i class="fa fa-calendar-check-o"></i> <span>Schedule</span></a>
+                            </li>
+                            ';
+                        }
+                        ?>
                         <li>
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
                         <li class="active">
-                            <a href="attendance_reports_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
+                            <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>
                     </ul>
                 </div>
@@ -75,9 +89,6 @@
                 <div class="row">
                     <div class="col-sm-4 col-3">
                         <h4 class="page-title">Student</h4>
-                    </div>
-                    <div class="col-sm-8 col-9 text-right m-b-20">
-                        <a href="add_student_page.php" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Student</a>
                     </div>
                 </div>
                 <div class="row filter-row">

@@ -18,7 +18,11 @@
 
         
     }
-    $sql = "SELECT studenttbl.student_lrn, studenttbl.student_fname, studenttbl.student_mname, studenttbl.student_lname, timeinouttbl.time_in, timeinouttbl.time_out, timeinouttbl.date
+    $scid = 0;
+    if($_SESSION['section_id'] != 0){
+        $scid = $_SESSION['section_id'];
+    }
+    $sql = "SELECT studenttbl.id, studenttbl.student_lrn, studenttbl.student_fname, studenttbl.student_mname, studenttbl.student_lname, timeinouttbl.time_in, timeinouttbl.time_out, timeinouttbl.date, studenttbl.section_id
                                             FROM timeinouttbl
                                             INNER JOIN studenttbl ON timeinouttbl.fingerprint_id=studenttbl.fingerprint_id".$extension;
     $result = mysqli_query($conn, $sql);
@@ -28,17 +32,34 @@
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
-            array_push($data_arr_date, $row);
-            if($selected_month != "-" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year == "-"){
-                array_push($data_arr, $row);
-            }else if($selected_year != "-" && $selected_year == substr($row['date'],0,4) && $selected_month == "-"){
-                array_push($data_arr, $row);
-            }else if($selected_month != "" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year != "" && $selected_year == substr($row['date'],0,4)){
-                array_push($data_arr, $row);
-            }else if($selected_month == "-" && $selected_year == "-" && $student_name == ""){
-                array_push($data_arr, $row);
-            }else if($selected_month == "-" && $selected_year == "-" && $student_name != ""){
-                array_push($data_arr, $row);
+            if($scid != 0){
+                if($row['section_id'] == $scid){
+                    array_push($data_arr_date, $row);
+                    if($selected_month != "-" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year == "-"){
+                        array_push($data_arr, $row);
+                    }else if($selected_year != "-" && $selected_year == substr($row['date'],0,4) && $selected_month == "-"){
+                        array_push($data_arr, $row);
+                    }else if($selected_month != "" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year != "" && $selected_year == substr($row['date'],0,4)){
+                        array_push($data_arr, $row);
+                    }else if($selected_month == "-" && $selected_year == "-" && $student_name == ""){
+                        array_push($data_arr, $row);
+                    }else if($selected_month == "-" && $selected_year == "-" && $student_name != ""){
+                        array_push($data_arr, $row);
+                    }
+                }
+            }else{
+                array_push($data_arr_date, $row);
+                if($selected_month != "-" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year == "-"){
+                    array_push($data_arr, $row);
+                }else if($selected_year != "-" && $selected_year == substr($row['date'],0,4) && $selected_month == "-"){
+                    array_push($data_arr, $row);
+                }else if($selected_month != "" && $selected_month == substr(substr($row['date'],5,7),0,2) && $selected_year != "" && $selected_year == substr($row['date'],0,4)){
+                    array_push($data_arr, $row);
+                }else if($selected_month == "-" && $selected_year == "-" && $student_name == ""){
+                    array_push($data_arr, $row);
+                }else if($selected_month == "-" && $selected_year == "-" && $student_name != ""){
+                    array_push($data_arr, $row);
+                }
             }
         }
         //print_r($data_arr);
@@ -85,37 +106,42 @@
                         <span><?php echo $_SESSION['login_user']?></span>
                     </a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="login.html">Logout</a>
+						<a class="dropdown-item" href="logout.php">Logout</a>
 					</div>
                 </li>
             </ul>
             <div class="dropdown mobile-user-menu float-right">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
         <!-- start of sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
+            <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li>
                             <a href="student_list_page.php"><i class="fa fa-user"></i> <span>Students List</span></a>
                         </li>
+                        <?php if($_SESSION['login_user'] == 'admin'){
+                            echo '
+                            <li>
+                            <a href="teacher_list_page.php"><i class="fa fa-user"></i> <span>Teachers List</span></a>
+                            </li>
+                            <li>
+                                <a href="section_list_page.php"><i class="fa-solid fa-section"></i> <span>Sections List</span></a>
+                            </li>
+                            <li>
+                                <a href="schedule_page.php"><i class="fa fa-calendar-check-o"></i> <span>Schedule</span></a>
+                            </li>
+                            ';
+                        }
+                        ?>
                         <li class="active">
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
-                        <li class="submenu">
-							<a href="#"><i class="fa fa-flag-o"></i> <span> Attendance </span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-								<li><a class="active" href="employees.html">Employees List</a></li>
-								<li><a href="leaves.html">Leaves</a></li>
-								<li><a href="holidays.html">Holidays</a></li>
-								<li><a href="attendance.html">Attendance</a></li>
-							</ul>
-						</li>
                         <li>
                             <a href="register_biometric_page.php"><i class="fa-solid fa-fingerprint"></i> <span>Biometric Registration</span></a>
                         </li>

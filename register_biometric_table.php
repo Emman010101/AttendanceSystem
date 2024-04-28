@@ -8,8 +8,13 @@
         $search_name = $_GET['search'];
         $extension = " AND student_fname LIKE '%".$_GET['search']."%'";
     }
-
+    if($_SESSION['section_id'] != 0){
+        $scid = $_SESSION['section_id'];
+        $extension .= " AND section_id='$scid'";
+    }
     $sql = "SELECT * FROM studenttbl WHERE del_fingerid=0".$extension." ORDER BY student_lname";
+
+    
     $result = mysqli_query($conn, $sql);
     
     $data_arr = array();

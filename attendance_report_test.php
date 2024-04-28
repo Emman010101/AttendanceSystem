@@ -1,6 +1,6 @@
 <?php
     include "dbconnect.php";
-    $sql = "SELECT studenttbl.student_fname, studenttbl.student_mname, studenttbl.student_lname 
+    $sql = "SELECT studenttbl.id, studenttbl.student_fname, studenttbl.student_mname, studenttbl.student_lname, studenttbl.fingerprint_id, timeinouttbl.date, timeinouttbl.time_in, timeinouttbl.time_out
     FROM timeinouttbl INNER JOIN studenttbl ON timeinouttbl.fingerprint_id=studenttbl.fingerprint_id";
 
     $student_array = array();
@@ -10,6 +10,12 @@
         while($row = mysqli_fetch_assoc($result)) {
             array_push($student_array, $row);
         }
+        //print_r($student_array);
+        $month = date_format(date_create($student_array[0]['date']), "m");
+        if($month[0] == 0){
+           $month = substr($month, 1,2);
+        }
+        //echo $month;
     }
 ?>
 <!DOCTYPE html>
@@ -125,13 +131,16 @@
                         <a href="#" class="btn btn-success btn-block"> Search </a>
                     </div>
                 </div>
+                <div class="col-sm-12">
+                        <h4 class="page-title">2024</h4>
+                    </div>
                 <div class="row">
                     <div class="col-lg-12">
 						<div class="table-responsive">
                             <table class="table table-striped custom-table mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Student</th>
+                                        <th>January</th>
                                         <th>1</th>
                                         <th>2</th>
                                         <th>3</th>

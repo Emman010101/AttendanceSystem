@@ -1,7 +1,7 @@
 <?php
     include "dbconnect.php";
-    $sql="INSERT INTO teachertbl ( `username`, `password`)
-VALUES('teacher', MD5('teacher'))";
+    $sql="INSERT INTO userstbl ( `username`, `password`)
+VALUES('admin', MD5('admin'))";
     
     if (mysqli_query($conn, $sql)) {
       echo "New record created successfully";

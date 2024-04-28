@@ -732,6 +732,7 @@ uint8_t deleteFingerprint( int id) {
   } 
   return p;  
 }
+
 //******************Check if there a Fingerprint ID to add******************
 void ChecktoAddID(){
 
@@ -773,7 +774,7 @@ uint8_t getFingerprintEnroll() {
       display.display();
       break;
     case FINGERPRINT_NOFINGER:
-      //Serial.println("" + id);
+      Serial.println("No Finger");
       display.setTextSize(1);             // Normal 2:2 pixel scale
       display.setTextColor(WHITE);        // Draw white text
       display.setCursor(0,0);             // Start at top-left corner
@@ -969,7 +970,7 @@ void confirmAdding(){
 //********************connect to the WiFi******************
 void connectToWiFi(){
     WiFi.mode(WIFI_OFF);        //Prevents reconnection issue (taking too long to connect)
-    delay(1000);getFingerprintEnroll()
+    delay(1000);
     WiFi.mode(WIFI_STA);
     Serial.print("Connecting to ");
     Serial.println(ssid);

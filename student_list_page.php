@@ -9,7 +9,15 @@
         $extension = " AND student_fname LIKE '%".$_GET['search']."%'";
     }
 
-    $sql = "SELECT * FROM studenttbl WHERE del_fingerid=0".$extension;
+    $section_id = "";
+
+    if($_SESSION['section_id'] != 0){
+        $scid = $_SESSION['section_id'];
+        $sql = "SELECT * FROM studenttbl WHERE del_fingerid='0' AND section_id='$scid'".$extension;
+    }else{
+        $sql = "SELECT * FROM studenttbl WHERE del_fingerid='0'".$extension;
+    }
+    
     $result = mysqli_query($conn, $sql);
     
     $data_arr = array();
@@ -23,7 +31,28 @@
     } else {
         echo "0 results";
     }
-    
+    $sql = "SELECT * FROM sectiontbl";
+    $result = mysqli_query($conn, $sql);
+
+    $sections_ids = array();
+    $grades_and_sections = array();
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($sections_ids, $row['id']);
+            array_push($grades_and_sections, $row['grade']." - ".$row['section_name']);
+        }
+    }
+
+    $sql = "SELECT * FROM timeinoutsettingstbl";
+    $result = mysqli_query($conn, $sql);
+
+    $arr = array();
+    if(mysqli_num_rows($result) > 0){
+        while($row = mysqli_fetch_assoc($result)){
+            $_SESSION['timein'] = $row['timein'];
+            $_SESSION['timeout'] = $row['timeout'];
+        }
+    }
     
 ?>
 <!DOCTYPE html>
@@ -68,7 +97,7 @@
             <div class="dropdown mobile-user-menu float-right">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -80,6 +109,20 @@
                         <li class="active">
                             <a href="student_list_page.php"><i class="fa fa-user"></i> <span>Students List</span></a>
                         </li>
+                        <?php if($_SESSION['login_user'] == 'admin'){
+                            echo '
+                            <li>
+                            <a href="teacher_list_page.php"><i class="fa fa-user"></i> <span>Teachers List</span></a>
+                            </li>
+                            <li>
+                                <a href="section_list_page.php"><i class="fa-solid fa-section"></i> <span>Sections List</span></a>
+                            </li>
+                            <li>
+                                <a href="schedule_page.php"><i class="fa fa-calendar-check-o"></i> <span>Schedule</span></a>
+                            </li>
+                            ';
+                        }
+                        ?>
                         <li>
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
@@ -119,6 +162,7 @@
                                 <thead>
                                     <tr>
                                         <th>LRN</th>
+                                        <th>Grade and Section</th>
                                         <th>First Name</th>
                                         <th>Middle Name</th>
                                         <th>Last Name</th>
@@ -129,9 +173,18 @@
                                 </thead>
                                 <tbody>
                                 <?php
-                                            foreach($data_arr as $value){
-                                                echo '<tr><td>'.$value["student_lrn"].'</td>';
-                                                echo '<td>'.$value["student_fname"].'</td>';
+                                            foreach($data_arr as $key => $value){
+                                                $imgpath = "assets/img/user.jpg";
+                                                if(!empty($value['img_name'])){
+                                                    $imgpath = "uploads/".$value['img_name'];
+                                                }
+                                                echo '<tr><td><img width="40" height="40" src="'.$imgpath.'" class="rounded-circle m-r-5" alt="" data-toggle="modal" data-target="#view_student" onclick="getImageName(this)">'.$value["student_lrn"].'</td><td>';
+                                                if($value['section_id'] == 0){
+                                                    echo "None";
+                                                }else{
+                                                    echo $grades_and_sections[array_search($value['section_id'], $sections_ids)];
+                                                }
+                                                echo '</td><td>'.$value["student_fname"].'</td>';
                                                 echo '<td>'.$value["student_mname"].'</td>';
                                                 echo '<td>'.$value["student_lname"].'</td>';
                                                 echo '<td>'.$value["student_birthdate"].'</td>';
@@ -166,6 +219,11 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+        <div id="view_student" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+				<img src="assets/img/sent.png" id="view_student_image" alt="" width="400" height="300">
 			</div>
 		</div>
     </div>
@@ -209,6 +267,12 @@
             var search_name = document.getElementById("student_name").value;
 
             window.location.href = "student_list_page.php?search=" + search_name;
+        }
+
+        function getImageName(imageName){
+            //console.log(imageName);
+            console.log(imageName.src);
+            document.getElementById("view_student_image").src = imageName.src;
         }
     </script>
 </body>

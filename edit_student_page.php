@@ -20,6 +20,16 @@
         }
         $_SESSION["idHasValue"] = $data_arr[0]['fingerprint_id'];
     }
+
+    $sql = "SELECT * FROM sectiontbl";
+    $result = mysqli_query($conn, $sql);
+
+    $sections = array();
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($sections, $row);
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,25 +65,39 @@
                         <span><?php echo $_SESSION['login_user']?></span>
                     </a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="login.html">Logout</a>
+						<a class="dropdown-item" href="logout.php">Logout</a>
 					</div>
                 </li>
             </ul>
             <div class="dropdown mobile-user-menu float-right">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
         <!-- start of sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
+            <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li class="active">
                             <a href="student_list_page.php"><i class="fa fa-user"></i> <span>Students List</span></a>
                         </li>
+                        <?php if($_SESSION['login_user'] == 'admin'){
+                            echo '
+                            <li>
+                            <a href="teacher_list_page.php"><i class="fa fa-user"></i> <span>Teachers List</span></a>
+                            </li>
+                            <li>
+                                <a href="section_list_page.php"><i class="fa-solid fa-section"></i> <span>Sections List</span></a>
+                            </li>
+                            <li>
+                                <a href="schedule_page.php"><i class="fa fa-calendar-check-o"></i> <span>Schedule</span></a>
+                            </li>
+                            ';
+                        }
+                        ?>
                         <li>
                             <a href="attendance_reports_page.php"><i class="fa fa-flag-o"></i> <span>Attendance Reports</span></a>
                         </li>
@@ -98,6 +122,22 @@
                         <h3 class="card-title">Basic Informations</h3>
                         <div class="row">
                             <div class="col-md-12">
+                            <div class="profile-img-wrap">
+                                <?php
+                                    $imgfilename = "assets/img/user.jpg";
+                                    if(!empty($data_arr[0]['img_name'])){
+                                        $imgfilename = "uploads/".$data_arr[0]['img_name'];
+                                    }
+                                ?>
+                                    <img class="inline-block" src="<?php echo $imgfilename?>" alt="user" id="userimage">
+                                    <div class="fileupload btn">
+                                        <span class="btn-text">edit</span>
+                                        <input class="upload" type="file" name="fileToUpload" id="imagetoupload" accept="image/png, image/jpeg" value="<?php echo $imgfilename?>">
+                                    </div>
+                                    <div class="webcamera btn" style="left: 0;">
+                                        <span class="btn-text" data-toggle="modal" data-target="#webcam_modal" onclick="Webcam.attach( '#my_camera' );"><i class="fa-solid fa-camera"></i></span>
+                                    </div>
+                                </div>
                                 <div class="profile-basic">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -148,6 +188,23 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group form-focus select-focus">
+                                                <label class="focus-label">Grade and Section</label>
+                                                <select class="select form-control floating" name="sectionid">
+                                                    <?php 
+                                                         foreach($sections as $value){
+                                                            if($data_arr[0]['section_id'] == $value['id']){
+                                                                echo '<option value="'.$value["id"].'" selected>'.$value["grade"]." - ".$value["section_name"].'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$value["id"].'">'.$value["grade"]." - ".$value["section_name"].'</option>';
+                                                            }
+                                                            
+                                                         }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +233,19 @@
                 </form>
             </div>
         </div>
+        <div id="webcam_modal" class="modal fade" role="dialog">
+            <input type="hidden" id="hidden_id" name="id"></input>
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+                        <div id="my_camera"></div>
+						<div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal" onclick="Webcam.reset()">Close</a>
+							<button type="submit" class="btn btn-primary" onclick="take_snapshot()">Take a picture</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="assets/js/jquery-3.2.1.min.js"></script>
@@ -211,7 +281,9 @@
             },5000);
         });
     </script>
-    
+    <script src="assets/js/imageset.js"></script>
+    <script type="text/javascript" src="assets/plugins/webcamjs-master/webcam.js"></script>
+    <script type="text/javascript" src="assets/js/webcam_controller.js"></script>
 </body>
 </html>
 <?php

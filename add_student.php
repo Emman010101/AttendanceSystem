@@ -9,6 +9,8 @@
     $gender = $_POST['gender'];
     $address = $_POST['address'];
     $phoneno = $_POST['phoneno'];
+    $sectionid = $_POST['sectionid'];
+    include "file_upload.php";
 
     $birthdate = str_replace('/', '-', $birthdate);
     $time = strtotime($birthdate);
@@ -62,8 +64,8 @@
     }
 
 
-    $sql="INSERT INTO studenttbl ( `student_lrn`, `student_fname`, `student_mname`, `student_lname`, `student_birthdate`, `student_gender`, `student_address`, `student_phoneno`, `fingerprint_id`)
-VALUES('$lrn', '$fname', '$mname', '$lname', '$birthdate', '$gender', '$address', '$phoneno', '$last_fingerprint_id')";
+    $sql="INSERT INTO studenttbl ( `student_lrn`, `student_fname`, `student_mname`, `student_lname`, `student_birthdate`, `student_gender`, `student_address`, `student_phoneno`, `fingerprint_id`, `img_name`, `section_id`)
+VALUES('$lrn', '$fname', '$mname', '$lname', '$birthdate', '$gender', '$address', '$phoneno', '$last_fingerprint_id', '$new_filename', '$sectionid')";
     
     if (mysqli_query($conn, $sql)) {
       $_SESSION['student_added'] = true; 

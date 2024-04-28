@@ -46,7 +46,7 @@ if (isset($_GET['FingerID'])) {
                             if (mysqli_query($conn, $sql)) {
                                 //$_SESSION['student_added'] = true; 
                                 //header("Location: add_student_page.php");
-                                echo "Login".$fname;
+                                echo "login".$fname;
                             } else {
                                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                             }
@@ -57,25 +57,32 @@ if (isset($_GET['FingerID'])) {
                     else{
                         $sql = "SELECT time_in FROM timeinouttbl WHERE fingerprint_id=$fingerID";
                         $result = mysqli_query($conn, $sql);
-                        // if($row = mysqli_fetch_assoc($result)){
-                        //     date_default_timezone_set('Asia/Singapore');
-                        //     $timein = strtotime($row['time_in']);
-                        //     $currtime = date('h:i:s');
-                        //     echo $currtime - $timein;
-                        // }
-                    	$sql="UPDATE timeinouttbl SET `time_out`=CURTIME() WHERE fingerprint_id=? AND date=CURDATE()";
-                        $result = mysqli_stmt_init($conn);
-                        if (!mysqli_stmt_prepare($result, $sql)) {
-                            echo "SQL_Error_insert_logout1";
-                            exit();
+                        if($row = mysqli_fetch_assoc($result)){
+                            date_default_timezone_set('Asia/Singapore');
+                            $timein = strtotime($row['time_in']);
+                            $currtime = strtotime(date('H:i:s'));
+                            $diff = $currtime - $timein;
+                            $sched_diff = strtotime($_SESSION['timeout']) - strtotime($_SESSION['timein']);
+                            //echo $currtime - $timein;
+                            //echo "timein: $timein currtime: $currtime diff: $diff";
+                            //if the time difference between time in and current time is 3600 seconds
+                            if($diff >= $sched_diff){
+                                $sql="UPDATE timeinouttbl SET `time_out`=CURTIME() WHERE fingerprint_id=? AND date=CURDATE()";
+                                $result = mysqli_stmt_init($conn);
+                                if (!mysqli_stmt_prepare($result, $sql)) {
+                                    echo "SQL_Error_insert_logout1";
+                                    exit();
+                                }
+                                else{
+                                    mysqli_stmt_bind_param($result, "i", $fingerID);
+                                    mysqli_stmt_execute($result);
+        
+                                    echo "logout".$fname;
+                                    exit();
+                                }
+                            }
                         }
-                        else{
-                            mysqli_stmt_bind_param($result, "i", $fingerID);
-                            mysqli_stmt_execute($result);
 
-                            echo "Logout".$fname;
-                            exit();
-                        }
                     }
                 }
             }

@@ -46,7 +46,7 @@ if (isset($_POST['FingerID'])) {
                             if (mysqli_query($conn, $sql)) {
                                 //$_SESSION['student_added'] = true; 
                                 //header("Location: add_student_page.php");
-                                echo "Login".$fname;
+                                echo "login".$fname;
                             } else {
                                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                             }
@@ -55,19 +55,33 @@ if (isset($_POST['FingerID'])) {
                     //*****************************************************
                     //Logout
                     else{
-                    	$sql="UPDATE timeinouttbl SET `time_out`=CURTIME() WHERE fingerprint_id=? AND date=CURDATE()";
-                        $result = mysqli_stmt_init($conn);
-                        if (!mysqli_stmt_prepare($result, $sql)) {
-                            echo "SQL_Error_insert_logout1";
-                            exit();
+                        $sql = "SELECT time_in FROM timeinouttbl WHERE fingerprint_id=$fingerID";
+                        $result = mysqli_query($conn, $sql);
+                        if($row = mysqli_fetch_assoc($result)){
+                            date_default_timezone_set('Asia/Singapore');
+                            $timein = strtotime($row['time_in']);
+                            $currtime = strtotime(date('H:i:s'));
+                            $diff = $currtime - $timein;
+                            //echo $currtime - $timein;
+                            //echo "timein: $timein currtime: $currtime diff: $diff";
+                            //if the time difference between time in and current time is 3600 seconds
+                            if($diff >= 3600){
+                                $sql="UPDATE timeinouttbl SET `time_out`=CURTIME() WHERE fingerprint_id=? AND date=CURDATE()";
+                                $result = mysqli_stmt_init($conn);
+                                if (!mysqli_stmt_prepare($result, $sql)) {
+                                    echo "SQL_Error_insert_logout1";
+                                    exit();
+                                }
+                                else{
+                                    mysqli_stmt_bind_param($result, "i", $fingerID);
+                                    mysqli_stmt_execute($result);
+        
+                                    echo "logout".$fname;
+                                    exit();
+                                }
+                            }
                         }
-                        else{
-                            mysqli_stmt_bind_param($result, "i", $fingerID);
-                            mysqli_stmt_execute($result);
 
-                            echo "Logout".$fname;
-                            exit();
-                        }
                     }
                 }
             }
@@ -232,7 +246,7 @@ if (!empty($_POST['confirm_id'])) {
         else{
             mysqli_stmt_bind_param($result, "s", $fingerid);
             mysqli_stmt_execute($result);
-            $sql = "UPDATE studenttbl SET registered=1 WHERE fingerprint_id=$fingerid";
+            $sql = "UPDATE studenttbl SET registered=1, fingerprint_select=0 WHERE fingerprint_id=$fingerid";
             mysqli_query($conn, $sql);
             echo "Fingerprint has been added!";
             exit();
