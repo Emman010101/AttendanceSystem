@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2024 at 01:08 PM
+-- Generation Time: Apr 28, 2024 at 07:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sectiontbl`
+--
+
+CREATE TABLE `sectiontbl` (
+  `id` int(11) NOT NULL,
+  `grade` int(11) NOT NULL,
+  `section_name` varchar(255) NOT NULL,
+  `adviser_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `studenttbl`
 --
 
@@ -37,6 +50,8 @@ CREATE TABLE `studenttbl` (
   `student_gender` varchar(255) NOT NULL,
   `student_address` varchar(255) NOT NULL,
   `student_phoneno` varchar(11) NOT NULL,
+  `img_name` varchar(255) NOT NULL,
+  `section_id` int(11) NOT NULL,
   `fingerprint_id` int(11) NOT NULL,
   `add_fingerid` int(11) NOT NULL,
   `del_fingerid` int(11) NOT NULL,
@@ -44,31 +59,24 @@ CREATE TABLE `studenttbl` (
   `registered` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `studenttbl`
---
-
-INSERT INTO `studenttbl` (`id`, `student_lrn`, `student_fname`, `student_mname`, `student_lname`, `student_birthdate`, `student_gender`, `student_address`, `student_phoneno`, `fingerprint_id`, `add_fingerid`, `del_fingerid`, `fingerprint_select`, `registered`) VALUES
-(18, '12342134', 'wqrwqr', 'wrewq', 'wqerwq', '2024-04-22', 'Male', '', '', 3, 0, 0, 0, 0);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `teachertbl`
+-- Table structure for table `timeinoutsettingstbl`
 --
 
-CREATE TABLE `teachertbl` (
+CREATE TABLE `timeinoutsettingstbl` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `timein` time NOT NULL,
+  `timeout` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `teachertbl`
+-- Dumping data for table `timeinoutsettingstbl`
 --
 
-INSERT INTO `teachertbl` (`id`, `username`, `password`) VALUES
-(1, 'teacher', '8d788385431273d11e8b43bb78f3aa41');
+INSERT INTO `timeinoutsettingstbl` (`id`, `timein`, `timeout`) VALUES
+(1, '08:00:00', '17:00:00');
 
 -- --------------------------------------------------------
 
@@ -84,9 +92,41 @@ CREATE TABLE `timeinouttbl` (
   `fingerprint_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userstbl`
+--
+
+CREATE TABLE `userstbl` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `section_id` int(11) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
+  `middlename` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `gender` varchar(255) NOT NULL,
+  `birthdate` date NOT NULL,
+  `img_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userstbl`
+--
+
+INSERT INTO `userstbl` (`id`, `username`, `password`, `section_id`, `firstname`, `middlename`, `lastname`, `gender`, `birthdate`, `img_name`) VALUES
+(3, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, '', '', '', '', '0000-00-00', '');
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `sectiontbl`
+--
+ALTER TABLE `sectiontbl`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `studenttbl`
@@ -95,9 +135,9 @@ ALTER TABLE `studenttbl`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `teachertbl`
+-- Indexes for table `timeinoutsettingstbl`
 --
-ALTER TABLE `teachertbl`
+ALTER TABLE `timeinoutsettingstbl`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -107,26 +147,44 @@ ALTER TABLE `timeinouttbl`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `userstbl`
+--
+ALTER TABLE `userstbl`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `sectiontbl`
+--
+ALTER TABLE `sectiontbl`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `studenttbl`
 --
 ALTER TABLE `studenttbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `teachertbl`
+-- AUTO_INCREMENT for table `timeinoutsettingstbl`
 --
-ALTER TABLE `teachertbl`
+ALTER TABLE `timeinoutsettingstbl`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `timeinouttbl`
 --
 ALTER TABLE `timeinouttbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `userstbl`
+--
+ALTER TABLE `userstbl`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
