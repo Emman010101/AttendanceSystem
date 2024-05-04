@@ -1,6 +1,8 @@
+Attendance System with Arduino
+
 Login Credentials
 
-Username: teacher
-Password: teacher
+Username: admin
+Password: admin
 
 Database: asdb
