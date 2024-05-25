@@ -13,7 +13,7 @@
         $row = mysqli_num_rows($result);      
         $count = mysqli_num_rows($result);
   
-        if($count == 1) {
+        if($count >= 1) {
            // session_register("myusername");
            $row2 = mysqli_fetch_assoc($result);
            $_SESSION['login_user'] = $myusername;
